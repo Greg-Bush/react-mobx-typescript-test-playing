@@ -1,49 +1,38 @@
 import { observable, computed } from 'mobx';
 import _ from 'lodash';
 import IDataItem from '../IDataItem';
+import AbstractTableModel from './AbstractTableModel';
 
-class RightTableModel {
-  constructor(items: IDataItem[]) {
-    this._items = new Set(items);
-  }
-  @computed public get items() {
-    return Array.from(this._items);
-  }
+export default class RightTableModel extends AbstractTableModel {
   @computed public get checkedCount() {
     return this.checked.size;
   }
-  public isChecked(item: IDataItem) {
-    return this.checked.has(item);
-  }
-  public check(item: IDataItem, value: boolean) {
+  public isChecked = (id: number) => {
+    return this.checked.has(this._items.get(id));
+  };
+  public check = (id: number, value: boolean) => {
+    const item = this._items.get(id);
     if (value) {
       this.checked.add(item);
     } else {
       this.checked.delete(item);
     }
-  }
-  public add(item: IDataItem) {
-    this._items.add(item);
-  }
-  public removeChecked() {
+  };
+  public removeChecked = () => {
     const removedItems: IDataItem[] = [];
-    this.checked.forEach(checkedItem => {
-      if (this._items.delete(checkedItem)) {
+    this.checked.forEach((checkedItem) => {
+      if (this._items.delete(checkedItem.id)) {
         removedItems.push(checkedItem);
       }
     });
     this.checked.clear();
     return removedItems;
-  }
-  public checkAll() {
-    this._items.forEach(item => this.checked.add(item));
-  }
-  public uncheckAll() {
+  };
+  public checkAll = () => {
+    this._items.forEach((item) => this.checked.add(item));
+  };
+  public uncheckAll = () => {
     this.checked.clear();
-  }
-
-  @observable private _items: Set<IDataItem>;
-  @observable private checked = new Set<IDataItem>();
+  };
+  private checked = observable.set<IDataItem>();
 }
-
-export default RightTableModel;

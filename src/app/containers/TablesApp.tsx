@@ -27,7 +27,7 @@ export default class TablesApp extends React.Component<TablesAppProps> {
         gridGap: '20px'
       }}>
         <div>
-          <LeftDataTable items={left.items} isSelected={left.isSelected}  />
+          <LeftDataTable items={left.items} selectedId={left.selectedId}  />
         </div>
         <div>
           <RightDataTable items={right.items} check={right.check} isChecked={right.isChecked}  />
@@ -37,9 +37,9 @@ export default class TablesApp extends React.Component<TablesAppProps> {
           gridTemplateColumns: '1fr 1fr 1fr',
           gridGap: '10px'
         }}>
-          <Button onPress={left.selectNext}>&darr;</Button>
-          <Button onPress={left.selectPrevious}>&uarr;</Button>
-          <Button onPress={tablesStore.throwRight}>Добавить</Button>
+          <Button disabled={left.isLastSelected} onPress={left.selectNext}>&darr;</Button>
+          <Button disabled={left.isFirstSelected} onPress={left.selectPrevious}>&uarr;</Button>
+          <Button disabled={!left.isAnySelected} onPress={tablesStore.throwRight}>Добавить</Button>
         </div>
         <div style={{
           display: 'inline-grid',

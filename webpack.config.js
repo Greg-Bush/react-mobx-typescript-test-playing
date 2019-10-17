@@ -56,9 +56,7 @@ module.exports = {
               modules: true,
               sourceMap: !isProduction,
               importLoaders: 1,
-              localIdentName: isProduction
-                ? '[hash:base64:5]'
-                : '[local]__[hash:base64:5]'
+              localIdentName: '[local]'
             }
           },
           {

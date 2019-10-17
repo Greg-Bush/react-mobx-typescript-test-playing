@@ -1,40 +1,48 @@
 import React from 'react';
-import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { observer } from 'mobx-react';
-import * as style from './style.css';
 import IDataItem from 'app/IDataItem';
+import ReactTable from 'react-table';
 import TruncatedTextWithHTML from 'app/base-components/TruncatedTextWithHTML';
+import * as style from './style.css';
 
 interface Props {
   items: IDataItem[];
-  isSelected: (item: IDataItem) => boolean;
+  selectedId: number;
 }
-const LeftDataTable: React.FC<Props> = ({ items, isSelected }) => {
+const LeftDataTable: React.FC<Props> = ({ items, selectedId }) => {
   return (
     <ReactTable
       showPagination={false}
       data={items}
       columns={[
         {
-          id: 'artNo',
-          Header: 'Артикул',
-          accessor: (d) => d.artNo
+          accessor: 'id',
+          show: false
         },
         {
-          id: 'name',
+          Header: 'Артикул',
+          accessor: 'artNo',
+          style: {
+            textAlign: 'center',
+            alignSelf: 'center'
+          }
+        },
+        {
           Header: 'Наименование',
-          accessor: (d) => d.name,
-          Cell: ({ value }) => <TruncatedTextWithHTML value={value} max={41} />
+          accessor: 'name',
+          Cell: ({ value }) => <TruncatedTextWithHTML value={value} max={41} />,
+          style: {
+            whiteSpace: 'normal'
+          }
         }
       ]}
       getTrProps={(state, rowInfo, column) => {
-        if(isSelected(rowInfo.row))
-        return {
-          className: style.highlighted
-        }
+        const className =
+          rowInfo && rowInfo.row.id === selectedId ? style.highlighted : null;
+        return { className };
       }}
-      defaultPageSize={100}
+      defaultPageSize={items.length}
       className="-striped -highlight"
     />
   );
