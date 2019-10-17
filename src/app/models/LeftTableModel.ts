@@ -13,7 +13,9 @@ export default class LeftTableModel extends AbstractTableModel {
     return this.count > 0;
   }
   @computed public get selectedId() {
-    return this.items[this.selectedIndex].id;
+    const { items } = this;
+    const selectedItem = items[this.selectedIndex];
+    return (selectedItem && selectedItem.id) || items[0];
   }
   public removeSelected = () => {
     const { selected } = this;
