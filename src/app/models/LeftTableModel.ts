@@ -15,11 +15,14 @@ export default class LeftTableModel extends AbstractTableModel {
   @computed public get selectedId() {
     const { items } = this;
     const selectedItem = items[this.selectedIndex];
-    return (selectedItem && selectedItem.id) || items[0];
+    return selectedItem && selectedItem.id;
   }
   public removeSelected = () => {
-    const { selected } = this;
-    if (this._items.delete(this.selected.id)) {
+    const { selected, isLastSelected } = this;
+    if (this._items.delete(selected.id)) {
+      if (isLastSelected) {
+        this.selectedIndex = 0;
+      }
       return selected;
     }
     return null;
