@@ -1,8 +1,7 @@
 {
-  "name": "typescript-react-mobx-boilerplate",
+  "name": "react-mobx-typescript-test-playing",
   "version": "1.0.0",
   "private": true,
-  "description": "A frontend boilerplate with React, MobX and Typescript",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
