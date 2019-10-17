@@ -1,14 +1,20 @@
+import {STORE_ROUTER} from '../constants/stores';
 import { History } from 'history';
-import { TodoModel } from 'app/models';
-import { TodoStore } from './TodoStore';
 import { RouterStore } from './RouterStore';
-import { STORE_TODO, STORE_ROUTER } from 'app/constants';
+import TablesStore from './TablesStore';
+import LeftTableModel from 'app/models/LeftTableModel';
+import { LEFT_TABLE_MOCK_DATA, RIGHT_TABLE_MOCK_DATA } from 'app/stores/mock-data';
+import RightTableModel from 'app/models/RightTableModel';
+import { STORE_TABLES } from 'app/constants/stores';
 
-export function createStores(history: History, defaultTodos?: TodoModel[]) {
-  const todoStore = new TodoStore(defaultTodos);
+export function createStores(history: History) {
+  const tablesStore = new TablesStore(
+    new LeftTableModel(LEFT_TABLE_MOCK_DATA),
+    new RightTableModel(RIGHT_TABLE_MOCK_DATA)
+  );
   const routerStore = new RouterStore(history);
   return {
-    [STORE_TODO]: todoStore,
+    [STORE_TABLES]: tablesStore,
     [STORE_ROUTER]: routerStore
   };
 }
