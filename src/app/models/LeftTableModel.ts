@@ -1,4 +1,4 @@
-import { observable, computed } from 'mobx';
+import { observable, computed, action } from 'mobx';
 import _ from 'lodash';
 import AbstractTableModel from './AbstractTableModel';
 
@@ -17,7 +17,7 @@ export default class LeftTableModel extends AbstractTableModel {
     const selectedItem = items[this.selectedIndex];
     return selectedItem && selectedItem.id;
   }
-  public removeSelected = () => {
+  @action public removeSelected = () => {
     const { selected, isLastSelected } = this;
     if (this._items.delete(selected.id)) {
       if (isLastSelected) {
@@ -27,10 +27,10 @@ export default class LeftTableModel extends AbstractTableModel {
     }
     return null;
   };
-  public selectNext = () => {
+  @action public selectNext = () => {
     this.selectedIndex++;
   };
-  public selectPrevious = () => {
+  @action public selectPrevious = () => {
     this.selectedIndex--;
   };
 
