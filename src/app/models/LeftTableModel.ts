@@ -19,7 +19,7 @@ export default class LeftTableModel extends AbstractTableModel {
   }
   @action public removeSelected = () => {
     const { selected, isLastSelected } = this;
-    if (this._items.delete(selected.id)) {
+    if (this.delete(selected.id)) {
       if (isLastSelected) {
         this.selectedIndex = 0;
       }
@@ -37,8 +37,5 @@ export default class LeftTableModel extends AbstractTableModel {
   @observable private selectedIndex = 0;
   @computed private get selected() {
     return this.items[this.selectedIndex];
-  }
-  @computed private get count() {
-    return this._items.size;
   }
 }

@@ -40,7 +40,9 @@ module.exports = {
         use: [
           !isProduction && {
             loader: 'babel-loader',
-            options: { plugins: ['react-hot-loader/babel'] }
+            options: {
+              plugins: ['react-hot-loader/babel']
+            }
           },
           'ts-loader'
         ].filter(Boolean)
@@ -64,7 +66,9 @@ module.exports = {
             options: {
               ident: 'postcss',
               plugins: [
-                require('postcss-import')({ addDependencyTo: webpack }),
+                require('postcss-import')({
+                  addDependencyTo: webpack
+                }),
                 require('postcss-url')(),
                 require('postcss-preset-env')({
                   /* use stage 2 features (defaults) */
@@ -80,8 +84,14 @@ module.exports = {
         ]
       },
       // static assets
-      { test: /\.html$/, use: 'html-loader' },
-      { test: /\.(a?png|svg)$/, use: 'url-loader?limit=10000' },
+      {
+        test: /\.html$/,
+        use: 'html-loader'
+      },
+      {
+        test: /\.(a?png|svg)$/,
+        use: 'url-loader?limit=10000'
+      },
       {
         test: /\.(jpe?g|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
         use: 'file-loader'

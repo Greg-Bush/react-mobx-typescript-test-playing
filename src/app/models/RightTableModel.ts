@@ -4,15 +4,12 @@ import IDataItem from '../IDataItem';
 import AbstractTableModel from './AbstractTableModel';
 
 export default class RightTableModel extends AbstractTableModel {
+  public checked = observable.set<IDataItem>();
   @computed public get checkedCount() {
     return this.checked.size;
   }
-  public isChecked = (id: number) => {
-    return this.checked.has(this._items.get(id));
-  };
   @action public check = (id: number, value: boolean) => {
-    console.log({id, value})
-    const item = this._items.get(id);
+    const item = this.getItemById(id);
     if (value) {
       this.checked.add(item);
     } else {
@@ -22,7 +19,7 @@ export default class RightTableModel extends AbstractTableModel {
   @action public removeChecked = () => {
     const removedItems: IDataItem[] = [];
     this.checked.forEach((checkedItem) => {
-      if (this._items.delete(checkedItem.id)) {
+      if (this.delete(checkedItem.id)) {
         removedItems.push(checkedItem);
       }
     });
@@ -30,10 +27,9 @@ export default class RightTableModel extends AbstractTableModel {
     return removedItems;
   };
   @action public checkAll = () => {
-    this._items.forEach((item) => this.checked.add(item));
+    this.items.forEach((item) => this.checked.add(item));
   };
   @action public uncheckAll = () => {
     this.checked.clear();
   };
-  private checked = observable.set<IDataItem>(); // ?
 }

@@ -29,10 +29,10 @@ export default class TablesApp extends React.Component<TablesAppProps> {
         }}
       >
         <div>
-          <LeftDataTable model={left} />
+          <LeftDataTable />
         </div>
         <div>
-          <RightDataTable model={right} />
+          <RightDataTable />
         </div>
         <div
           style={{
@@ -67,9 +67,24 @@ export default class TablesApp extends React.Component<TablesAppProps> {
             gridGap: '10px'
           }}
         >
-          <Button onPress={right.checkAll}>Выбрать все</Button>
-          <Button onPress={right.uncheckAll}>Сбросить выделение</Button>
-          <Button onPress={tablesStore.throwLeft}>Удалить</Button>
+          <Button
+            disabled={right.checkedCount === right.count}
+            onPress={right.checkAll}
+          >
+            Выбрать все
+          </Button>
+          <Button
+            disabled={right.checkedCount === 0}
+            onPress={right.uncheckAll}
+          >
+            Сбросить выделение
+          </Button>
+          <Button
+            disabled={right.checkedCount === 0}
+            onPress={tablesStore.throwLeft}
+          >
+            Удалить
+          </Button>
         </div>
       </div>
     );

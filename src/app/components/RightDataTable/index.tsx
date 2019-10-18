@@ -1,45 +1,57 @@
 import React from 'react';
-import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import Checkbox from 'app/base-components/Checkbox';
 import TruncatedTextWithHTML from 'app/base-components/TruncatedTextWithHTML';
 import RightTableModel from 'app/models/RightTableModel';
+import { STORE_RIGHT_TABLE } from 'app/constants/stores';
+import DataTable from 'app/base-components/DataTable';
+import IDataItem from 'app/IDataItem';
 
-interface Props {
-  model: RightTableModel;
+interface IProps {
+  [STORE_RIGHT_TABLE]?: RightTableModel;
 }
-interface CellProps {
-  value: any;
+interface ICellProps extends IProps {
+  item: IDataItem;
 }
 
-const RightDataTable: React.FC<Props> = ({ model }) => {
-  const CheckboxCell: React.FC<CellProps> = ({ value: id }) => {
+const CheckboxCell: React.FC<ICellProps> = inject(STORE_RIGHT_TABLE)(
+  observer((props) => {
+    const { STORE_RIGHT_TABLE: model, item } = props;
+    const isChecked = (id: number) => {
+      return model.checked.has(item);
+    };
     return (
       <Checkbox
-        isChecked={model.isChecked(id)}
-        onChange={(checked) => model.check(id, checked)}
+        isChecked={isChecked(item.id)}
+        onChange={(checked) => model.check(item.id, checked)}
       />
     );
-  };
-  const DescriptionCell: React.FC<CellProps> = ({ value: item }) => {
-    return (
-      <div style={{
-        whiteSpace: 'normal'
-      }}>
-          <p>{'Арт.: ' + item.artNo}</p>
-          <p>
-            <TruncatedTextWithHTML value={item.name} max={100} />
-          </p>
-          <p>
-            <TruncatedTextWithHTML value={item.description} max={264} />
-          </p>
-      </div>
-    );
-  };
+  })
+);
 
+const DescriptionCell: React.FC<Partial<ICellProps>> = observer(({ item }) => {
   return (
-    <ReactTable
+    <div
+      style={{
+        whiteSpace: 'normal'
+      }}
+    >
+      <p>{'Арт.: ' + item.artNo}</p>
+      <p>
+        <TruncatedTextWithHTML value={item.name} max={100} />
+      </p>
+      <p>
+        <TruncatedTextWithHTML value={item.description} max={264} />
+      </p>
+    </div>
+  );
+});
+
+const RightDataTable: React.FC<IProps> = (props) => {
+  const { STORE_RIGHT_TABLE: model } = props;
+  return (
+    <DataTable
       showPagination={false}
       showPageSizeOptions={false}
       sortable={false}
@@ -48,20 +60,25 @@ const RightDataTable: React.FC<Props> = ({ model }) => {
         {
           Header: undefined,
           id: 'descriptionColumn',
-          accessor: (d) => d,
-          Cell: DescriptionCell
+          accessor: 'id',
+          Cell: ({ value: id }) => (
+            <DescriptionCell item={model.getItemById(id)} />
+          )
         },
         {
           Header: undefined,
+          id: 'checkboxColumn',
           accessor: 'id',
-          Cell: CheckboxCell,
+          Cell: ({ value: id }) => (
+            <CheckboxCell item={model.getItemById(id)} />
+          ),
           width: 35,
           style: {
             alignSelf: 'center'
           }
         }
       ]}
-      defaultPageSize={model.items.length}
+      pageSize={model.count}
       className="-striped -highlight"
       getTheadProps={() => ({
         style: {
@@ -72,4 +89,4 @@ const RightDataTable: React.FC<Props> = ({ model }) => {
   );
 };
 
-export default observer(RightDataTable);
+export default inject(STORE_RIGHT_TABLE)(observer(RightDataTable));

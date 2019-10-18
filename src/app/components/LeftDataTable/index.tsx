@@ -1,17 +1,19 @@
 import React from 'react';
 import 'react-table/react-table.css';
-import { observer } from 'mobx-react';
-import ReactTable from 'react-table';
+import { observer, inject } from 'mobx-react';
 import TruncatedTextWithHTML from 'app/base-components/TruncatedTextWithHTML';
 import * as style from './style.css';
 import LeftTableModel from 'app/models/LeftTableModel';
+import { STORE_LEFT_TABLE } from 'app/constants/stores';
+import DataTable from 'app/base-components/DataTable';
 
-interface Props {
-  model: LeftTableModel;
+interface IProps {
+  [STORE_LEFT_TABLE]?: LeftTableModel;
 }
-const LeftDataTable: React.FC<Props> = ({ model }) => {
+const LeftDataTable: React.FC<IProps> = (props) => {
+  const { STORE_LEFT_TABLE: model } = props;
   return (
-    <ReactTable
+    <DataTable
       showPagination={false}
       data={model.items}
       columns={[
@@ -43,10 +45,14 @@ const LeftDataTable: React.FC<Props> = ({ model }) => {
             : null;
         return { className };
       }}
-      defaultPageSize={model.items.length}
+      getTheadProps={() => {
+        const style = model.count === 0 ? { height: 0 } : null;
+        return { style };
+      }}
+      pageSize={model.count}
       className="-striped -highlight"
     />
   );
 };
 
-export default observer(LeftDataTable);
+export default inject(STORE_LEFT_TABLE)(observer(LeftDataTable));
