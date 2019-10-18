@@ -37,8 +37,8 @@ export default class TablesApp extends React.Component<TablesAppProps> {
           gridTemplateColumns: '1fr 1fr 1fr',
           gridGap: '10px'
         }}>
-          <Button disabled={left.isLastSelected} onPress={left.selectNext}>&darr;</Button>
-          <Button disabled={left.isFirstSelected} onPress={left.selectPrevious}>&uarr;</Button>
+          <Button disabled={left.isLastSelected || !left.isAnySelected} onPress={left.selectNext}>&darr;</Button>
+          <Button disabled={left.isFirstSelected|| !left.isAnySelected} onPress={left.selectPrevious}>&uarr;</Button>
           <Button disabled={!left.isAnySelected} onPress={tablesStore.throwRight}>Добавить</Button>
         </div>
         <div style={{
