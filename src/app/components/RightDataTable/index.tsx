@@ -59,14 +59,6 @@ const RightDataTable: React.FC<IProps> = (props) => {
       columns={[
         {
           Header: undefined,
-          id: 'descriptionColumn',
-          accessor: 'id',
-          Cell: ({ value: id }) => (
-            <DescriptionCell item={model.getItemById(id)} />
-          )
-        },
-        {
-          Header: undefined,
           id: 'checkboxColumn',
           accessor: 'id',
           Cell: ({ value: id }) => (
@@ -76,6 +68,14 @@ const RightDataTable: React.FC<IProps> = (props) => {
           style: {
             alignSelf: 'center'
           }
+        },
+        {
+          Header: undefined,
+          id: 'descriptionColumn',
+          accessor: 'id',
+          Cell: ({ value: id }) => (
+            <DescriptionCell item={model.getItemById(id)} />
+          )
         }
       ]}
       pageSize={model.count}
