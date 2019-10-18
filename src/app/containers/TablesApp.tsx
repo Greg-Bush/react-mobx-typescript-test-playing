@@ -20,32 +20,53 @@ export default class TablesApp extends React.Component<TablesAppProps> {
     const { left, right } = tablesStore;
 
     return (
-      <div style={{
-        display: 'grid',
-        gridTemplateRows: '1fr 40px',
-        gridTemplateColumns: '1fr 1fr',
-        gridGap: '20px'
-      }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateRows: '1fr 40px',
+          gridTemplateColumns: '1fr 1fr',
+          gridGap: '20px'
+        }}
+      >
         <div>
-          <LeftDataTable items={left.items} selectedId={left.selectedId}  />
+          <LeftDataTable model={left} />
         </div>
         <div>
-          <RightDataTable items={right.items} check={right.check} isChecked={right.isChecked}  />
+          <RightDataTable model={right} />
         </div>
-        <div style={{
-          display: 'inline-grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
-          gridGap: '10px'
-        }}>
-          <Button disabled={left.isLastSelected || !left.isAnySelected} onPress={left.selectNext}>&darr;</Button>
-          <Button disabled={left.isFirstSelected|| !left.isAnySelected} onPress={left.selectPrevious}>&uarr;</Button>
-          <Button disabled={!left.isAnySelected} onPress={tablesStore.throwRight}>Добавить</Button>
+        <div
+          style={{
+            display: 'inline-grid',
+            gridTemplateColumns: '1fr 1fr 1fr',
+            gridGap: '10px'
+          }}
+        >
+          <Button
+            disabled={left.isLastSelected || !left.isAnySelected}
+            onPress={left.selectNext}
+          >
+            &darr;
+          </Button>
+          <Button
+            disabled={left.isFirstSelected || !left.isAnySelected}
+            onPress={left.selectPrevious}
+          >
+            &uarr;
+          </Button>
+          <Button
+            disabled={!left.isAnySelected}
+            onPress={tablesStore.throwRight}
+          >
+            Добавить
+          </Button>
         </div>
-        <div style={{
-          display: 'inline-grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
-          gridGap: '10px'
-        }}>
+        <div
+          style={{
+            display: 'inline-grid',
+            gridTemplateColumns: '1fr 1fr 1fr',
+            gridGap: '10px'
+          }}
+        >
           <Button onPress={right.checkAll}>Выбрать все</Button>
           <Button onPress={right.uncheckAll}>Сбросить выделение</Button>
           <Button onPress={tablesStore.throwLeft}>Удалить</Button>

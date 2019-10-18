@@ -1,20 +1,19 @@
 import React from 'react';
 import 'react-table/react-table.css';
 import { observer } from 'mobx-react';
-import IDataItem from 'app/IDataItem';
 import ReactTable from 'react-table';
 import TruncatedTextWithHTML from 'app/base-components/TruncatedTextWithHTML';
 import * as style from './style.css';
+import LeftTableModel from 'app/models/LeftTableModel';
 
 interface Props {
-  items: IDataItem[];
-  selectedId: number;
+  model: LeftTableModel;
 }
-const LeftDataTable: React.FC<Props> = ({ items, selectedId }) => {
+const LeftDataTable: React.FC<Props> = ({ model }) => {
   return (
     <ReactTable
       showPagination={false}
-      data={items}
+      data={model.items}
       columns={[
         {
           accessor: 'id',
@@ -39,10 +38,12 @@ const LeftDataTable: React.FC<Props> = ({ items, selectedId }) => {
       ]}
       getTrProps={(state, rowInfo, column) => {
         const className =
-          rowInfo && rowInfo.row.id === selectedId ? style.highlighted : null;
+          rowInfo && rowInfo.row.id === model.selectedId
+            ? style.highlighted
+            : null;
         return { className };
       }}
-      defaultPageSize={items.length}
+      defaultPageSize={model.items.length}
       className="-striped -highlight"
     />
   );

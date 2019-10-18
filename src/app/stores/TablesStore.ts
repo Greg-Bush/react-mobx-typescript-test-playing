@@ -3,7 +3,7 @@ import LeftTableModel from 'app/models/LeftTableModel';
 import RightTableModel from 'app/models/RightTableModel';
 import _ from 'lodash';
 
-export class TablesStore {
+export default class TablesStore {
   constructor(left: LeftTableModel, right: RightTableModel) {
     this.left = left;
     this.right = right;
@@ -22,5 +22,3 @@ export class TablesStore {
     _.forEach(items, this.left.add);
   }
 }
-
-export default TablesStore;

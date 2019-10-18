@@ -2,25 +2,23 @@ import React from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { observer } from 'mobx-react';
-import IDataItem from 'app/IDataItem';
 import Checkbox from 'app/base-components/Checkbox';
 import TruncatedTextWithHTML from 'app/base-components/TruncatedTextWithHTML';
+import RightTableModel from 'app/models/RightTableModel';
 
 interface Props {
-  items: IDataItem[];
-  check: (id: number, value: boolean) => void;
-  isChecked: (id: number) => boolean;
+  model: RightTableModel;
 }
 interface CellProps {
   value: any;
 }
 
-const RightDataTable: React.FC<Props> = ({ items, check, isChecked }) => {
+const RightDataTable: React.FC<Props> = ({ model }) => {
   const CheckboxCell: React.FC<CellProps> = ({ value: id }) => {
     return (
       <Checkbox
-        isChecked={isChecked(id)}
-        onChange={(checked) => check(id, checked)}
+        isChecked={model.isChecked(id)}
+        onChange={(checked) => model.check(id, checked)}
       />
     );
   };
@@ -45,7 +43,7 @@ const RightDataTable: React.FC<Props> = ({ items, check, isChecked }) => {
       showPagination={false}
       showPageSizeOptions={false}
       sortable={false}
-      data={items}
+      data={model.items}
       columns={[
         {
           Header: undefined,
@@ -63,7 +61,7 @@ const RightDataTable: React.FC<Props> = ({ items, check, isChecked }) => {
           }
         }
       ]}
-      defaultPageSize={items.length}
+      defaultPageSize={model.items.length}
       className="-striped -highlight"
       getTheadProps={() => ({
         style: {
